@@ -20,15 +20,21 @@ jobs:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
-  test:
-    docker:
-      - image: circleci/node:lts-jessie
+  deploy:
+    machine:
+      timezone:
+        Asia/Shanghai # 设置时区
+      enabled: true
+    working_directory: /tmp/workspace
     steps:
-      - checkout
-      - run:
-          name: Test
-          command: npm test
-
+      - run: echo "=========================部署开始=========================“
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: pwd && ls -al
+      - run: 
+          name: Deploy Over SSH
+          command: ./.circleci/deploy-master.sh
+      - run: echo "=========================部署完毕========================="
 workflows:
   version: 2
   build_and_test:
