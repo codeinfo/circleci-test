@@ -35,9 +35,10 @@ jobs:
       - attach_workspace:
           at: ~/workspace
       - run: pwd && ls -al
+      - run: pwd && ls -al
       - run: 
           name: Deploy Over SSH
-          command: ./.circleci/deploy-master.sh
+          command: ./circleci/deploy-master.sh
       - run: echo "=========================部署完毕========================="
 workflows:
   version: 2
