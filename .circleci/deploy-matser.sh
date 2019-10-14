@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 user=root
-host=ip
+host=209.250.254.48
 src=`pwd`"/"
 des=/data/www/  # 网站目录？
 now=`date +"%Y-%m-%d %H:%M:%S"`
