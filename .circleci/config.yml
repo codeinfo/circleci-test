@@ -1,12 +1,13 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/mern-starter
+    working_directory: ~/workspace
     # The primary container is an instance of the first image listed. The job's commands run in this container.
     docker:
       - image: circleci/node:lts-jessie
     # The secondary container is an instance of the second listed image which is run in a common network where ports exposed on the primary container are available on localhost.
     steps:
+      - run: echo "=========================构建开始========================="
       - checkout
       - run:
           name: Update npm
@@ -25,11 +26,11 @@ jobs:
       timezone:
         Asia/Shanghai # 设置时区
       enabled: true
-    working_directory: /tmp/workspace
+    working_directory: ~/workspace
     steps:
       - run: echo "=========================部署开始=========================“
       - attach_workspace:
-          at: /tmp/workspace
+          at: ~/workspace
       - run: pwd && ls -al
       - run: 
           name: Deploy Over SSH
@@ -37,10 +38,10 @@ jobs:
       - run: echo "=========================部署完毕========================="
 workflows:
   version: 2
-  build_and_test:
+  build_and_deploy:
     jobs:
       - build
-      - test:
+      - deploy:
           requires:
             - build
           filters:
