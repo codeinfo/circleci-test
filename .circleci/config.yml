@@ -31,8 +31,8 @@ jobs:
       - run: echo "=========================部署开始========================="
       - attach_workspace:
           at: ~/workspace
-      - run: pwd && ls
-      - run: cd .circleci
+      - run: pwd && ls -al
+      - run: cd /home/circleci/workspace/circleci
       - run: ls
       # - run: 
       #     name: Deploy Over SSH
