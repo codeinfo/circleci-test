@@ -1,26 +1,26 @@
 version: 2
 jobs:
-  build:
-    working_directory: ~/workspace
-    # The primary container is an instance of the first image listed. The job's commands run in this container.
-    docker:
-      - image: circleci/node:lts-jessie
-    # The secondary container is an instance of the second listed image which is run in a common network where ports exposed on the primary container are available on localhost.
-    steps:
-      - run: echo "=========================构建开始========================="
-      - checkout
-      - run:
-          name: Update npm
-          command: 'sudo npm install -g npm@latest'
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-      - run:
-          name: Install npm wee
-          command: npm install
-      - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
+  # build:
+  #   working_directory: ~/workspace
+  #   # The primary container is an instance of the first image listed. The job's commands run in this container.
+  #   docker:
+  #     - image: circleci/node:lts-jessie
+  #   # The secondary container is an instance of the second listed image which is run in a common network where ports exposed on the primary container are available on localhost.
+  #   steps:
+  #     - run: echo "=========================构建开始========================="
+  #     - checkout
+  #     - run:
+  #         name: Update npm
+  #         command: 'sudo npm install -g npm@latest'
+  #     - restore_cache:
+  #         key: dependency-cache-{{ checksum "package-lock.json" }}
+  #     - run:
+  #         name: Install npm wee
+  #         command: npm install
+  #     - save_cache:
+  #         key: dependency-cache-{{ checksum "package-lock.json" }}
+  #         paths:
+  #           - node_modules
   deploy:
     machine:
       timezone:
@@ -32,9 +32,11 @@ jobs:
       - attach_workspace:
           at: ~/workspace
       - run: pwd && ls -al
-      - run: 
-          name: Deploy Over SSH
-          command: ./circleci/deploy-master.sh
+      - run: cd circleci
+      - run: ls
+      # - run: 
+      #     name: Deploy Over SSH
+      #     command: ./circleci/deploy-master.sh
       - run: echo "=========================部署完毕========================="
 workflows:
   version: 2
