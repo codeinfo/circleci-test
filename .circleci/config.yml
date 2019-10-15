@@ -4,7 +4,7 @@ jobs:
     working_directory: ~/workspace
     # The primary container is an instance of the first image listed. The job's commands run in this container.
     docker:
-      - image: circleci/node:lts-jessie
+      - image: vuejs/ci
     # The secondary container is an instance of the second listed image which is run in a common network where ports exposed on the primary container are available on localhost.
     steps:
       - checkout
@@ -13,18 +13,22 @@ jobs:
           command: 'sudo npm install -g npm@latest'
       - restore_cache:
           keys: 
-            - v1-dependency-cache-{{ checksum "package-lock.json" }}
-            - v1-dependency-cache-
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            # 如果没有匹配的缓存则使用最新的缓存
+            - v1-dependencies
+      # 查看目录
       - run: pwd && ls -al
-      - run:
-          name: Install npm wee
-          command: npm install
+
+      - run: 
+          name: Installing Dependencies
+          command: yarn --frozen-lockfile
+      
       - save_cache:
-          key: v1-dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
-      - persist_to_workspace:
-          root: ~/workspace
+            - ~/.cache/yarn
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+
   deploy:
     machine:
       timezone:
