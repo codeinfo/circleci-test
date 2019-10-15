@@ -8,9 +8,7 @@ jobs:
     # The secondary container is an instance of the second listed image which is run in a common network where ports exposed on the primary container are available on localhost.
     steps:
       - checkout
-      - run:
-          name: Update npm
-          command: 'sudo npm install -g npm@latest'
+      
       - restore_cache:
           keys: 
             - v1-dependencies-{{ checksum "yarn.lock" }}
