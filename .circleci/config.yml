@@ -35,9 +35,9 @@ jobs:
       
       # 存储缓存文件
       - persist_to_workspace:
-        root: ~/workspace
-        paths:
-        - image.tar
+          root: ~/workspace
+          paths:
+            - /dist/*
 
   deploy:
     machine:
