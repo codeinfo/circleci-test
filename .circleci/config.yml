@@ -28,8 +28,16 @@ jobs:
             - ~/.cache/yarn
           key: v1-dependencies-{{ checksum "yarn.lock" }}
 
-      # 查看目录
-      - run: pwd && ls -al
+      # 创建打包文件
+      - run: 
+          name: build package
+          command: yarn run build:prod
+      
+      # 存储缓存文件
+      - persist_to_workspace:
+        root: ~/workspace
+        paths:
+        - image.tar
 
   deploy:
     machine:

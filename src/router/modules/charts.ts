@@ -28,15 +28,6 @@ const chartsRouter: RouteConfig = {
         title: 'lineChart',
         noCache: true
       }
-    },
-    {
-      path: 'mixed-chart',
-      component: () => import(/* webpackChunkName: "mixed-chart" */ '@/views/charts/mixed-chart.vue'),
-      name: 'MixedChartDemo',
-      meta: {
-        title: 'mixedChart',
-        noCache: true
-      }
     }
   ]
 }
