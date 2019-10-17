@@ -44,10 +44,10 @@ jobs:
 
   deploy:
     <<: *defaults
-    machine:
-      timezone:
-        Asia/Shanghai # 设置时区
-      enabled: true
+    # machine:
+    #   timezone:
+    #     Asia/Shanghai # 设置时区
+    #   enabled: true
     steps:
       - attach_workspace:  #获取上级工作流
           at: ~/workspace 
