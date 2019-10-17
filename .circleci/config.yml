@@ -32,7 +32,8 @@ jobs:
       - run: 
           name: build package
           command: yarn run build:prod
-      
+      # 查看目录
+      - run: pwd && ls -al
       # 存储缓存文件
       - persist_to_workspace:
           root: ~/workspace
