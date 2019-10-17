@@ -1,18 +1,20 @@
 version: 2
+
+defaults: &defaults
+  working_directory: ~/workspace
+  docker:
+    - image: vuejs/ci
+
 jobs:
   build:
-    working_directory: ~/workspace
-    # The primary container is an instance of the first image listed. The job's commands run in this container.
-    docker:
-      - image: vuejs/ci
-    # The secondary container is an instance of the second listed image which is run in a common network where ports exposed on the primary container are available on localhost.
+    <<: *defaults
     steps:
       # 同步代码
       - checkout
       # 从缓存中获取
       - restore_cache:
           keys: 
-            - v1-dependencies-{{ checksum "yarn.lock" }}
+            - v1-dependencies-{{ .Branch }}-{{ checksum "yarn.lock" }}
             # 如果没有匹配的缓存则使用最新的缓存
             - v1-dependencies
       # 查看目录
@@ -26,7 +28,7 @@ jobs:
           paths:
             - node_modules
             - ~/.cache/yarn
-          key: v1-dependencies-{{ checksum "yarn.lock" }}
+          key: v1-dependencies-{{ .Branch }}-{{ checksum "yarn.lock" }}
 
       # 创建打包文件
       - run: 
@@ -36,16 +38,16 @@ jobs:
       - run: pwd && ls -al
       # 存储缓存文件
       - persist_to_workspace:
-          root: ~/workspace
+          root: ~/
           paths:
-            - dist/*
+            - workspace
 
   deploy:
+    <<: *defaults
     machine:
       timezone:
         Asia/Shanghai # 设置时区
       enabled: true
-    working_directory: ~/workspace
     steps:
       - attach_workspace:  #获取上级工作流
           at: ~/workspace 
